@@ -21,7 +21,8 @@ public class QueryDepotList implements QueryDepotIF {
     /* @returns el n�mero de consultas diferentes almacenadas */
     @Override
     public int numQueries() {
-        return queryList.size();
+        //viewQueries(); // Habrá que eliminar esta línea, es sólo para pruebas ---------------------------->
+        return queryList.size();               
     }
 
     /* Consulta la frecuencia de una consulta en el dep�sito */
@@ -29,15 +30,22 @@ public class QueryDepotList implements QueryDepotIF {
     /* @param el texto de la consulta */
     @Override
     public int getFreqQuery(String q) {
-        // Aquí habrá que implementar otro método privado para buscar una consulta en la lista
-        return 1;
+        Query query = searchQuery(q);
+        if (query == null) { // No existe la consulta
+            return 0;
+        } else { // Sí que existe la consulta, devuelve la frecuencia
+            return query.getFreq();
+        }
     }
     
     private Query searchQuery(String text) {
         Query q;
         IteratorIF<Query> i = queryList.iterator();
         while(i.hasNext()) {
-            
+            q = i.getNext();
+            if (q.getText().equals(text)) {
+                return q;
+            }
         }
         return null;
     }
@@ -50,8 +58,17 @@ public class QueryDepotList implements QueryDepotIF {
     /* @param el prefijo */
     @Override
     public ListIF<Query> listOfQueries(String prefix) {
+        ListIF<Query> queryTemp = new List();
+        Query query;
         // Aquí habrá que crear un comparador para ordenarlo
-        return null;
+        IteratorIF<Query> i = queryList.iterator();
+        while(i.hasNext()) {
+            query = i.getNext();
+            if (query.getText().startsWith(prefix)) {
+                queryTemp.insert(query, queryTemp.size() + 1);
+            }
+        }
+        return queryTemp;
     }
 
     /* Incrementa en uno la frecuencia de una consulta en el dep�sito */
@@ -59,9 +76,21 @@ public class QueryDepotList implements QueryDepotIF {
     /* @param el texto de la consulta */
     @Override
     public void incFreqQuery(String q) {
-        // Aquí habrá que usar el buscador creado en getFreqQuery() para saber si ya existe
-        // y saber si hay que aumentar la frecuencia o añadir de nuevo la consulta.
-        // Si la lista está vacía hay que añadir directamente
+        Query query = searchQuery(q);
+        if (query == null) { // No existe, crear la query
+            queryList.insert(new Query(q), queryList.size() + 1);
+        } else { // Sí que existe, incrementar la frecuencia
+            query.setFreq(query.getFreq() + 1);
+        }
+    }
+    
+    // Método de pruebas ----------------------------------------------------------------------->
+    private void viewQueries() {
+        System.out.println("\nConsultas almacenadas:\n");
+        IteratorIF<Query> i = queryList.iterator();
+        while(i.hasNext()) {
+            System.out.println(i.getNext().toString());
+        }
     }
 
 }

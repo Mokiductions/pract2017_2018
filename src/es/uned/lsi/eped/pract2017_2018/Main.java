@@ -1,22 +1,82 @@
 package es.uned.lsi.eped.pract2017_2018;
 
+import es.uned.lsi.eped.DataStructures.IteratorIF;
+import es.uned.lsi.eped.DataStructures.ListIF;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("Arrancando el main");
+        // Pruebas custom ------------------------------------------------------------------------->
+        /*System.out.println("Arrancando como QueryDepotList");
+
+        QueryDepotIF QD = null;
+        QD = new QueryDepotList();
+
+        String pathDepot = "JdP-consultas.txt";
+
+        // Carga las consultas del archivo
+        FileReader fDepot = new FileReader(pathDepot);
+        BufferedReader bDepot = new BufferedReader(fDepot);
+        String lineDepot;
+        while ((lineDepot = bDepot.readLine()) != null) {
+            QD.incFreqQuery(lineDepot);
+        }
+        bDepot.close();
+
+        // Muestra la cantidad de consultas almacenadas
+        System.out.println("Consultas almacenadas: " + QD.numQueries());
+
+        // Muestra la frecuencia de la consulta 'car tree'
+        System.out.println("\nLa consulta 'car tree' ha sido realizada " + QD.getFreqQuery("car tree") + " veces.");
+
+        // Muestra las consultas que empiezan con 'car tree'
+        System.out.println("\nConsultas que empiezan por 'car tree':\n");
+        ListIF<Query> queries = new List();
+        queries = QD.listOfQueries("car tree");
+        if (queries.isEmpty()) {
+            System.out.println("Ninguna");
+        } else {
+            IteratorIF<Query> i = queries.iterator();
+            while (i.hasNext()) {
+                Query query = i.getNext();
+                System.out.println(query.toString());
+            }
+        }
         
-        /*
-        //lectura de par�metros
+        // Muestra las consultas que empiezan con 'asdf'
+        System.out.println("\nConsultas que empiezan por 'asdfghjkl':\n");
+        queries = new List();
+        queries = QD.listOfQueries("asdfghjkl");
+        if (queries.isEmpty()) {
+            System.out.println("Ninguna");
+        } else {
+            IteratorIF<Query> i = queries.iterator();
+            while (i.hasNext()) {
+                Query query = i.getNext();
+                System.out.println(query.toString());
+            }
+        }
+        
+        // Fin de pruebas custom ------------------------------------------------------------------>*/
+        
+        /*//lectura de par�metros
         //estructura: L (lista) o T (�rbol general)
         String estructure = args[0];
 
         //fichero con el dep�sito de queries
         String pathDepot = args[1];
         //fichero de operaciones
-        String pathOperations = args[1];
+        String pathOperations = args[1];*/
+        
+        // Custom ---------------------------------------------------------------------------------->
+        String estructure = "L";
+        String pathDepot = "JdP-consultas.txt";
+        String pathOperations = "JdP-operaciones.txt";
+        // Custom ---------------------------------------------------------------------------------->
 
         //creaci�n del dep�sito de acuerdo a la estructura seleccionada
         QueryDepotIF QD = null;
@@ -69,7 +129,7 @@ public class Main {
             }
         }
         bOperations.close();
-*/         
+         
     }
 
 }

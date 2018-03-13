@@ -18,6 +18,7 @@ public class Query {
 
     public Query(String text) {
         this.text = text;
+        this.freq = 1;
     }
 
     public String getText() {
@@ -30,6 +31,10 @@ public class Query {
 
     public int getFreq() {
         return freq;
+    }
+
+    public void setFreq(int freq) {
+        this.freq = freq;
     }
 
     @Override
