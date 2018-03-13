@@ -21,7 +21,6 @@ public class QueryDepotList implements QueryDepotIF {
     /* @returns el n�mero de consultas diferentes almacenadas */
     @Override
     public int numQueries() {
-        //viewQueries(); // Habrá que eliminar esta línea, es sólo para pruebas ---------------------------->
         return queryList.size();               
     }
 
@@ -58,9 +57,9 @@ public class QueryDepotList implements QueryDepotIF {
     /* @param el prefijo */
     @Override
     public ListIF<Query> listOfQueries(String prefix) {
+        QueryComparator qc = new QueryComparator();
         ListIF<Query> queryTemp = new List();
         Query query;
-        // Aquí habrá que crear un comparador para ordenarlo
         IteratorIF<Query> i = queryList.iterator();
         while(i.hasNext()) {
             query = i.getNext();
@@ -68,6 +67,7 @@ public class QueryDepotList implements QueryDepotIF {
                 queryTemp.insert(query, queryTemp.size() + 1);
             }
         }
+        queryTemp = qc.sort(queryTemp);
         return queryTemp;
     }
 
@@ -84,13 +84,11 @@ public class QueryDepotList implements QueryDepotIF {
         }
     }
     
-    // Método de pruebas ----------------------------------------------------------------------->
-    private void viewQueries() {
-        System.out.println("\nConsultas almacenadas:\n");
+    private void printQueries() {
         IteratorIF<Query> i = queryList.iterator();
         while(i.hasNext()) {
-            System.out.println(i.getNext().toString());
+            Query query = i.getNext();
+            System.out.println(query.toString());
         }
     }
-
 }

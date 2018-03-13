@@ -75,6 +75,7 @@ public class Main {
         // Custom ---------------------------------------------------------------------------------->
         String estructure = "L";
         String pathDepot = "JdP-consultas.txt";
+        //String pathDepot = "edC.txt";
         String pathOperations = "JdP-operaciones.txt";
         // Custom ---------------------------------------------------------------------------------->
 
