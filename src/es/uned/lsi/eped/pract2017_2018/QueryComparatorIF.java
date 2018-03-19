@@ -15,6 +15,4 @@ public interface QueryComparatorIF {
     
     public int compare(Query q1, Query q2);
     
-    
-    
 }

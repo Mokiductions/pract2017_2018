@@ -4,7 +4,7 @@ public class Test {
 
 	
 	  public static void main(String [] args) throws Exception{
-		  		  
+				  
 		/* Test operaciones sobre listas */ 
 		System.out.println("Test de operaciones sobre listas");
 		List<Integer> L = new List<Integer>();

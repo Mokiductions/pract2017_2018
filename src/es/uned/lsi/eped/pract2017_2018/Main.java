@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         // Pruebas custom ------------------------------------------------------------------------->
-        /*System.out.println("Arrancando como QueryDepotList");
+       /* System.out.println("Arrancando como QueryDepotList");
 
         QueryDepotIF QD = null;
         QD = new QueryDepotList();
@@ -29,7 +29,7 @@ public class Main {
 
         // Muestra la cantidad de consultas almacenadas
         System.out.println("Consultas almacenadas: " + QD.numQueries());
-
+/*
         // Muestra la frecuencia de la consulta 'car tree'
         System.out.println("\nLa consulta 'car tree' ha sido realizada " + QD.getFreqQuery("car tree") + " veces.");
 
@@ -62,8 +62,7 @@ public class Main {
         }
         
         // Fin de pruebas custom ------------------------------------------------------------------>*/
-        
-        /*//lectura de par�metros
+/* //lectura de par�metros
         //estructura: L (lista) o T (�rbol general)
         String estructure = args[0];
 
@@ -71,12 +70,12 @@ public class Main {
         String pathDepot = args[1];
         //fichero de operaciones
         String pathOperations = args[1];*/
-        
         // Custom ---------------------------------------------------------------------------------->
         String estructure = "L";
         String pathDepot = "JdP-consultas.txt";
         //String pathDepot = "edC.txt";
         String pathOperations = "JdP-operaciones.txt";
+        double t0ttl = System.nanoTime();
         // Custom ---------------------------------------------------------------------------------->
 
         //creaci�n del dep�sito de acuerdo a la estructura seleccionada
@@ -91,10 +90,14 @@ public class Main {
         FileReader fDepot = new FileReader(pathDepot);
         BufferedReader bDepot = new BufferedReader(fDepot);
         String lineDepot;
+        double t0load = System.nanoTime();
         while ((lineDepot = bDepot.readLine()) != null) {
             QD.incFreqQuery(lineDepot);
         }
+        double t1load = System.nanoTime() - t0load;
+        t1load = t1load / 1000000.0;
         bDepot.close();
+        System.out.println("-Tiempo: " + t1load);
         System.out.println("Consultas almacenadas: " + QD.numQueries());
         //lectura y ejecuci�n de las operaciones 
         FileReader fOperations = new FileReader(pathOperations);
@@ -130,7 +133,9 @@ public class Main {
             }
         }
         bOperations.close();
-         
+        double t1ttl = System.nanoTime() - t0ttl;
+        t1ttl = t1ttl / 1000000.0;
+        System.out.println("-Tiempo total: " + t1ttl);
     }
 
 }
