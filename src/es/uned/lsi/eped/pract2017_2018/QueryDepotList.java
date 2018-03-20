@@ -77,7 +77,7 @@ public class QueryDepotList implements QueryDepotIF {
                 }
             }
         }
-        //queryTemp = qc.sort(queryTemp);
+        queryTemp = qc.sort(queryTemp);
         return queryTemp;
     }
 

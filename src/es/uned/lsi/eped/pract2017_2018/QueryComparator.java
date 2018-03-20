@@ -46,7 +46,7 @@ public class QueryComparator implements Comparator<Query> {
             while (queries.get(i).compareTo(pivot) >= 0 && i < j) {
                 i++;
             }
-            while (queries.get(i).compareTo(pivot) < 0) {
+            while (queries.get(j).compareTo(pivot) < 0) {
                 j--;
             }
             if (i < j) {          
