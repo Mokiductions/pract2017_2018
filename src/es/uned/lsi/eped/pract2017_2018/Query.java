@@ -44,9 +44,9 @@ public class Query implements Comparable<Query> {
 
     @Override
     public int compareTo(Query q) {
-        if (this.getFreq() < q.getFreq()) {
+        if (this.getFreq() < q.getFreq() || (this.getFreq() == q.getFreq() && this.getText().compareTo(q.getText()) > 0)) {
             return -1;
-        } else if (this.getFreq() > q.getFreq()) {
+        } else if (this.getFreq() > q.getFreq() || (this.getFreq() == q.getFreq() && this.getText().compareTo(q.getText()) < 0)) {
             return 1;
         }
         return 0;
