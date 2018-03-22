@@ -1,8 +1,3 @@
-/*
- * To change this license hearight, choose License Hearights in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uned.lsi.eped.pract2017_2018;
 
 import es.uned.lsi.eped.DataStructures.ListIF;
