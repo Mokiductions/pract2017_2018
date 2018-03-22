@@ -21,6 +21,7 @@ public class QueryDepotList implements QueryDepotIF {
  /* @returns el n�mero de consultas diferentes almacenadas */
     @Override
     public int numQueries() {
+        //printQueries();
         return queryDepot.size();
     }
 
