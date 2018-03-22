@@ -10,29 +10,34 @@ public class Query implements Comparable<Query> {
     private int freq;
     
     /**
-     * Constructor vacío.
+     * Construye una nueva query con el texto pasado como parámetro
+     * @param text el texto para la query
      */
-    public Query() {
-        
-    }
-
     public Query(String text) {
         this.text = text;
         this.freq = 1;
     }
 
+    /**
+     * Devuelve el texto de una query
+     * @return el texto actual de la query
+     */
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
+    /**
+     * Devuelve la frecuencia de una query
+     * @return la frecuencia actual de la query
+     */
     public int getFreq() {
         return freq;
     }
 
+    /**
+     * Modifica la frecuencia de la query
+     * @param freq la nueva frecuencia de la query
+     */
     public void setFreq(int freq) {
         this.freq = freq;
     }
