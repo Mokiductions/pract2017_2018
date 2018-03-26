@@ -12,14 +12,14 @@ import es.uned.lsi.eped.DataStructures.ListIF;
  */
 public class QueryDepotTree implements QueryDepotIF {
 
-    private GTreeIF<TreeNode> queryDepot; // Arbol principal para almacenar las queries
+    private GTreeIF<QueryTreeNode> queryDepot; // Arbol principal para almacenar las queries
 
     /**
      * Constructor del arbol de consultas
      */
     public QueryDepotTree() {
         queryDepot = new GTree();
-        queryDepot.setRoot(new TreeNode());
+        queryDepot.setRoot(new QueryTreeNode());
     }
 
     /**
@@ -29,9 +29,9 @@ public class QueryDepotTree implements QueryDepotIF {
     @Override
     public int numQueries() {
         int i = 0;
-        IteratorIF<TreeNode> it = queryDepot.iterator(GTreeIF.IteratorModes.PREORDER);
+        IteratorIF<QueryTreeNode> it = queryDepot.iterator(GTreeIF.IteratorModes.PREORDER);
         while (it.hasNext()) {
-            TreeNode tn = it.getNext();
+            QueryTreeNode tn = it.getNext();
             if (tn.isLeaf()) {
                 i++;
             }
@@ -45,17 +45,17 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param tree el arbol que va a recorrer
      * @param s cadena formandose de la palabra
      */
-    private void printTree(GTreeIF<TreeNode> tree, String s) {
+    private void printTree(GTreeIF<QueryTreeNode> tree, String s) {
         if (!tree.isEmpty()) {
             s += tree.getRoot().getCharValue();
-            ListIF<GTreeIF<TreeNode>> children = tree.getChildren();
+            ListIF<GTreeIF<QueryTreeNode>> children = tree.getChildren();
             if (children.isEmpty()) {
                 s += "' - Frecuencia " + tree.getRoot().getValue();
                 System.out.println("Consulta '" + s);
             } else {
-                IteratorIF<GTreeIF<TreeNode>> it = children.iterator();
+                IteratorIF<GTreeIF<QueryTreeNode>> it = children.iterator();
                 while (it.hasNext()) {
-                    GTreeIF<TreeNode> child = it.getNext();
+                    GTreeIF<QueryTreeNode> child = it.getNext();
                     printTree(child, s);
                 }
             }
@@ -78,9 +78,9 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param tree el subarbol en el que buscar el texto
      * @return la frecuencia de la query
      */
-    private int getFreq(String q, GTreeIF<TreeNode> tree) {
+    private int getFreq(String q, GTreeIF<QueryTreeNode> tree) {
         if (q.isEmpty()) {
-            GTreeIF<TreeNode> freqLeaf = getFreqLeaf(tree.getChildren());
+            GTreeIF<QueryTreeNode> freqLeaf = getFreqLeaf(tree.getChildren());
             if (freqLeaf.getRoot().isLeaf()) {
                 return freqLeaf.getRoot().getValue();
             } else {
@@ -89,7 +89,7 @@ public class QueryDepotTree implements QueryDepotIF {
         } else if (tree.getChildren().isEmpty()) {
             return 0;
         } else {
-            GTreeIF<TreeNode> charNode = getCharNode(tree.getChildren(), q.charAt(0));
+            GTreeIF<QueryTreeNode> charNode = getCharNode(tree.getChildren(), q.charAt(0));
             if (charNode == null) {
                 return 0;
             } else {
@@ -105,7 +105,7 @@ public class QueryDepotTree implements QueryDepotIF {
      */
     @Override
     public ListIF<Query> listOfQueries(String prefix) {
-        GTreeIF<TreeNode> prefixSubtree = getPrefixSubtree(prefix, queryDepot);
+        GTreeIF<QueryTreeNode> prefixSubtree = getPrefixSubtree(prefix, queryDepot);
         QueryComparator qc = new QueryComparator();
         return qc.sort(fillQueryList(prefix, prefixSubtree, "", new List<Query>()));
     }
@@ -117,7 +117,7 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param tree arbol en el que buscar el prefijo
      * @return subarbol de sugerencias para el prefijo
      */
-    private GTreeIF<TreeNode> getPrefixSubtree(String prefix, GTreeIF<TreeNode> tree) {
+    private GTreeIF<QueryTreeNode> getPrefixSubtree(String prefix, GTreeIF<QueryTreeNode> tree) {
         if (tree == null || prefix.isEmpty()) {
             return tree;
         }
@@ -134,9 +134,9 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param queryList lista de queries a la que añadir la query formada
      * @return la lista de queries que son sugerencias para el prefijo 
      */
-    private ListIF<Query> fillQueryList(String prefix, GTreeIF<TreeNode> tree, String s, ListIF<Query> queryList) {
-        ListIF<GTreeIF<TreeNode>> children = tree.getChildren();
-        GTreeIF<TreeNode> leaf = getFreqLeaf(children);
+    private ListIF<Query> fillQueryList(String prefix, GTreeIF<QueryTreeNode> tree, String s, ListIF<Query> queryList) {
+        ListIF<GTreeIF<QueryTreeNode>> children = tree.getChildren();
+        GTreeIF<QueryTreeNode> leaf = getFreqLeaf(children);
         if (leaf != null) {
             Query q = new Query(prefix + s);
             q.setFreq(leaf.getRoot().getValue());
@@ -146,9 +146,9 @@ public class QueryDepotTree implements QueryDepotIF {
             return queryList;
         }
 
-        IteratorIF<GTreeIF<TreeNode>> it = children.iterator();
+        IteratorIF<GTreeIF<QueryTreeNode>> it = children.iterator();
         while (it.hasNext()) {
-            GTreeIF<TreeNode> node = it.getNext();
+            GTreeIF<QueryTreeNode> node = it.getNext();
             if (!node.getRoot().isLeaf()) {
                 queryList = fillQueryList(prefix, node, s + node.getRoot().getCharValue(), queryList);
             }
@@ -172,23 +172,23 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param q
      * @param tree 
      */
-    private void incFreq(String q, GTreeIF<TreeNode> tree) {
+    private void incFreq(String q, GTreeIF<QueryTreeNode> tree) {
         // Si q esta vacia, significa que hay que añadir/acumular frecuencia
         // hay que coger el hijo de la posicion 1 (que deberia ser el de la
         // frec
         if (q.isEmpty()) {
-            GTreeIF<TreeNode> freqLeaf = getFreqLeaf(tree.getChildren());
+            GTreeIF<QueryTreeNode> freqLeaf = getFreqLeaf(tree.getChildren());
             if (freqLeaf == null) { // No tiene frecuencia, poner frecuencia 1
                 freqLeaf = new GTree();
-                freqLeaf.setRoot(new TreeNode(1));
+                freqLeaf.setRoot(new QueryTreeNode(1));
                 tree.addChild(tree.getNumChildren() + 1, freqLeaf);
             } else { // Ya tenia frecuencia, aumentar en 1.
-                freqLeaf.setRoot(new TreeNode(freqLeaf.getRoot().getValue() + 1));
+                freqLeaf.setRoot(new QueryTreeNode(freqLeaf.getRoot().getValue() + 1));
             }
         } else {
             // Queda palabra por añadir
-            ListIF<GTreeIF<TreeNode>> children = tree.getChildren();
-            GTreeIF<TreeNode> charNode = getCharNode(children, q.charAt(0));
+            ListIF<GTreeIF<QueryTreeNode>> children = tree.getChildren();
+            GTreeIF<QueryTreeNode> charNode = getCharNode(children, q.charAt(0));
             if (charNode == null) {
                 tree.addChild(children.size() + 1, createSubTree(q));
             } else {
@@ -204,11 +204,11 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param c
      * @return 
      */
-    private int getNewChildPos(ListIF<GTreeIF<TreeNode>> children, char c) {
-        IteratorIF<GTreeIF<TreeNode>> it = children.iterator();
+    private int getNewChildPos(ListIF<GTreeIF<QueryTreeNode>> children, char c) {
+        IteratorIF<GTreeIF<QueryTreeNode>> it = children.iterator();
         int i = 1;
         while (it.hasNext()) {
-            if (it.getNext().getRoot().compareTo(new TreeNode(c)) > -1) {
+            if (it.getNext().getRoot().compareTo(new QueryTreeNode(c)) > -1) {
                 return i - 1;
             }
             i++;
@@ -223,13 +223,13 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param children lista de nodos a buscar
      * @return el nodo frecuencia de la palabra formada por sus padres
      */
-    private GTreeIF<TreeNode> getFreqLeaf(ListIF<GTreeIF<TreeNode>> children) {
+    private GTreeIF<QueryTreeNode> getFreqLeaf(ListIF<GTreeIF<QueryTreeNode>> children) {
         if (children.isEmpty() || children == null) {
             return null;
         } else {
-            IteratorIF<GTreeIF<TreeNode>> it = children.iterator();
+            IteratorIF<GTreeIF<QueryTreeNode>> it = children.iterator();
             while (it.hasNext()) {
-                GTreeIF<TreeNode> child = it.getNext();
+                GTreeIF<QueryTreeNode> child = it.getNext();
                 if (child.isLeaf()) {
                     return child;
                 }
@@ -245,14 +245,14 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param c caracter a buscar en los nodos
      * @return el subarbol que contiene ese caracter, null si no existe
      */
-    private GTreeIF<TreeNode> getCharNode(ListIF<GTreeIF<TreeNode>> children, char c) {
+    private GTreeIF<QueryTreeNode> getCharNode(ListIF<GTreeIF<QueryTreeNode>> children, char c) {
         if (children.isEmpty() || children == null) {
             return null;
         } else {
-            IteratorIF<GTreeIF<TreeNode>> it = children.iterator();
+            IteratorIF<GTreeIF<QueryTreeNode>> it = children.iterator();
             while (it.hasNext()) {
-                GTreeIF<TreeNode> child = it.getNext();
-                if (!child.isLeaf() && child.getRoot().compareTo(new TreeNode(c)) == 0) {
+                GTreeIF<QueryTreeNode> child = it.getNext();
+                if (!child.isLeaf() && child.getRoot().compareTo(new QueryTreeNode(c)) == 0) {
                     return child;
                 }
             }
@@ -266,15 +266,15 @@ public class QueryDepotTree implements QueryDepotIF {
      * @param q texto de la query
      * @return el subarbol creado para la query
      */
-    private GTreeIF<TreeNode> createSubTree(String q) {
+    private GTreeIF<QueryTreeNode> createSubTree(String q) {
         if (q.isEmpty()) {
-            GTreeIF<TreeNode> freqLeaf = new GTree();
+            GTreeIF<QueryTreeNode> freqLeaf = new GTree();
             freqLeaf = new GTree();
-            freqLeaf.setRoot(new TreeNode(1));
+            freqLeaf.setRoot(new QueryTreeNode(1));
             return freqLeaf;
         } else {
-            GTreeIF<TreeNode> charNode = new GTree();
-            charNode.setRoot(new TreeNode(q.charAt(0)));
+            GTreeIF<QueryTreeNode> charNode = new GTree();
+            charNode.setRoot(new QueryTreeNode(q.charAt(0)));
             charNode.addChild(1, createSubTree(q.substring(1)));
             return charNode;
         }

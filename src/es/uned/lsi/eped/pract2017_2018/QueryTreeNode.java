@@ -4,18 +4,18 @@ package es.uned.lsi.eped.pract2017_2018;
  *
  * @author Miquel Ginés Borràs
  */
-public class TreeNode implements Comparable<TreeNode> {
+public class QueryTreeNode implements Comparable<QueryTreeNode> {
     
     private boolean leaf = false;
     private int value;
     
-    public TreeNode(){};
+    public QueryTreeNode(){};
     
-    public TreeNode(char value) {
+    public QueryTreeNode(char value) {
         this.value = (int) value;
     }
     
-    public TreeNode(int value) {
+    public QueryTreeNode(int value) {
         this.value = value;
         this.leaf = true;
     }
@@ -41,7 +41,7 @@ public class TreeNode implements Comparable<TreeNode> {
     }
 
     @Override
-    public int compareTo(TreeNode o) {
+    public int compareTo(QueryTreeNode o) {
         if (this.value < o.getValue()) {
             return -1;
         } else if (this.value == o.getValue()) {
