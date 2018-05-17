@@ -1,0 +1,20 @@
+F	foglio punizione
+F	glasses book
+F	rot lapiz
+F	cat white basket
+F	fiche
+F	ordenador
+F	rood muur
+F	knikkers
+F	yellow grapefruit
+F	clouds sun
+S	foglio
+S	glasses
+S	rot
+S	cat
+S	fiche
+S	rood
+S	clouds
+S	yellow
+S	public
+S	red

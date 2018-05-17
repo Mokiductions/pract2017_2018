@@ -128,7 +128,7 @@ public class GTree<E> extends Tree<E> implements GTreeIF<E> {
 		if ( !t.isEmpty() ) {
 			IteratorIF<GTreeIF<E>> childIt = t.getChildren().iterator();
 			while ( childIt.hasNext() ) {
-				preorder(childIt.getNext(),q);
+				postorder(childIt.getNext(),q);
 			}
 			q.enqueue(t.getRoot());
 		}

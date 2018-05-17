@@ -3,7 +3,7 @@ package es.uned.lsi.eped.DataStructures;
 /* Representa un árbol, que es una colección cuyos elementos se *
  * organizan jerárquicamente.                                   */
 
-public abstract interface TreeIF<E> extends CollectionIF<E> {
+public interface TreeIF<E> extends CollectionIF<E> {
 
 	/* Obtiene el elemento situado en la raíz del árbol         *
      * @Pre: !isEmpty ();                                       *
@@ -26,7 +26,7 @@ public abstract interface TreeIF<E> extends CollectionIF<E> {
     public int getHeight ();
 	
     /* Obtiene un iterador para el árbol.                       *
-     * @param traversal el tipo de recorrido indicado por los   * 
+     * @param mode el tipo de recorrido indicado por los        * 
      * valores enumerados definidos en cada TAD concreto.       */
     public IteratorIF<E> iterator (Object mode);    
 

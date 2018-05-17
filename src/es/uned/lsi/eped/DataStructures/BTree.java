@@ -87,8 +87,8 @@ public class BTree<E> extends Tree<E> implements BTreeIF<E> {
 	/* Devuelve el fan-out del árbol */
 	public int getFanOut() {
 		if ( getNumChildren() == 2 ) { return 2; }
-		if ( this.leftChild != null ) { return this.leftChild.getFanOut(); }
-		if ( this.rightChild != null ) { return this.rightChild.getFanOut(); }
+		if ( this.leftChild != null ) { return Math.max(1,this.leftChild.getFanOut()); }
+		if ( this.rightChild != null ) { return Math.max(1,this.rightChild.getFanOut()); }
 		return 0;
 	}
 
